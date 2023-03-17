@@ -3961,7 +3961,7 @@ module.exports.getVersion = async function() {
 };
 
 module.exports.modBuildRelease = async function() {
-    return call(['build', '--release', '--force']);
+    return call(['release']);
 };
 
 module.exports.modZip = async function(zipName) {
@@ -4040,10 +4040,6 @@ module.exports = async function run() {
 
     // build release
     await core.group('Build mod', () => hemtt.modBuildRelease());
-
-    if (process.platform !== 'win32') {
-        core.warning('Signing with HEMTT on Linux is broken at the moment! (see https://github.com/gruppe-adler/action-release-with-hemtt/issues/10 and https://github.com/BrettMayson/HEMTT/issues/278)')
-    }
 
     // set release path output
     const version = await hemtt.modGetVersion();
