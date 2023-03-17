@@ -4041,7 +4041,7 @@ module.exports = async function run() {
 
 
     // set outputs
-    setZipName(file);
+    setZipName(file.replace('.zip', ''));
     setZipPath(join(releasePath, file));
 
     return null;
