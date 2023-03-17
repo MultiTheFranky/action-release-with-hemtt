@@ -34,7 +34,7 @@ module.exports.getVersion = async function() {
 };
 
 module.exports.modBuildRelease = async function() {
-    return call(['build', '--release', '--force']);
+    return call(['release']);
 };
 
 module.exports.modZip = async function(zipName) {

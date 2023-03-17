@@ -64,10 +64,10 @@ describe('hemtt', () => {
         })
     })
     describe('modBuildRelease', () => {
-        it('calls hemtt with "build --release --force"', () => {
+        it('calls hemtt with "release"', () => {
             exec.exec = jest.fn();
             return hemtt.modBuildRelease().then(_ => {
-                expect(exec.exec.mock.calls[0][1]).toEqual(['build', '--release', '--force']);
+                expect(exec.exec.mock.calls[0][1]).toEqual(['release']);
             })
         })
     })
