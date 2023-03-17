@@ -40,15 +40,3 @@ module.exports.modBuildRelease = async function() {
 module.exports.modZip = async function(zipName) {
     return call(['zip', zipName]);
 };
-
-module.exports.modVar = async function (formatString) {
-    return call(['var', formatString]);
-}
-
-module.exports.modGetVersion = async function () {
-    return this.modVar('{{version}}');
-}
-
-module.exports.modGetName = async function () {
-    return this.modVar('{{name}}');
-}

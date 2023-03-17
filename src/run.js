@@ -2,7 +2,7 @@ const { join } = require('path');
 const core = require('@actions/core');
 const hemtt = require('./hemtt');
 const getCwd = require('./input').getCwd;
-const getZipBuild = require('./input').getZipBuild
+const fs = require('fs');
 const {setReleasePath, setZipName, setZipPath, setModName} = require('./output');
 
 module.exports = async function run() {
@@ -15,27 +15,24 @@ module.exports = async function run() {
     // build release
     await core.group('Build mod', () => hemtt.modBuildRelease());
 
-    // set release path output
-    const version = await hemtt.modGetVersion();
-    const modName = await hemtt.modVar('{{modname}}');
-    setReleasePath(join(cwd, 'releases', version));
+    // Get mod name from the zip name (which is the mod name + version)
+    const releasePath = join(cwd, "releases");
+    const releaseFiles = fs.readdirSync(releasePath).map(file => {
+        if (!file.includes('latest')) {
+            return file;
+        }
+    });
+
+    const file = releaseFiles[0];
+    const modName = file.split('-')[0];
+
+    setReleasePath(releasePath);
     setModName(modName);
 
-    if(!getZipBuild()) {
-        core.info('Skipping ZIP.')
-        return;
-    }
-
-    // find zip name
-    const zipName = await hemtt.modVar('{{name}}_{{version}}');
-    const zipPath = join(cwd, 'releases', `${zipName}.zip`);
-
-    // zip
-    await core.group('Zip release', () => hemtt.modZip(zipName));
 
     // set outputs
-    setZipName(zipName);
-    setZipPath(zipPath);
+    setZipName(file);
+    setZipPath(join(releasePath, file));
 
     return null;
 }
